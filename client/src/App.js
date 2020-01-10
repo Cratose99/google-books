@@ -7,48 +7,37 @@ import API from "./utils/API";
 import { BookList, BookListItem } from "./components/BookList";
 import { Container, Row, Col } from "./components/Grid";
 import SaveBtn from "./components/SaveBook";
- 
+import "./style.css";
 
 class App extends Component {
   state = {
     books: [],
     bookSearch: "",
-    savedBooks:[]
+    savedBooks: []
   };
 
   handleInputChange = event => {
-
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   };
 
-
-
   handleFormSubmit = event => {
-
     event.preventDefault();
     API.getBooks(this.state.bookSearch)
       .then(res => {
-  
         this.setState({ books: res.data.items });
-        console.log("state books ",this.state.books)
-      
-       
-        
+        console.log("state books ", this.state.books);
       })
       .catch(err => console.log(err));
   };
 
   saveBook = event => {
-  event.preventDefault();
-  this.setState({ savedBooks: this.state.books})
-  console.log("books ",this.state.savedBooks);
-  
-}
-
-
+    event.preventDefault();
+    this.setState({ savedBooks: this.state.books });
+    console.log("books ", this.state.savedBooks);
+  };
 
   render() {
     return (
@@ -76,7 +65,7 @@ class App extends Component {
                         className="input-lg, yoo"
                       >
                         Search
-                      </Button >
+                      </Button>
                     </Col>
                   </Row>
                 </Container>
@@ -85,34 +74,26 @@ class App extends Component {
           </Row>
           <Row>
             <Col size="xs-12">
-            {!this.state.books.length ? (
-             
-                <h1 className="text-center">No Books to Display</h1>
+              {!this.state.books.length ? (
+                <h1 className="book text-center">No Books to Display</h1>
               ) : (
                 <BookList>
-                
                   {this.state.books.map(book => {
                     return (
                       <BookListItem
-
                         key={book.id}
                         title={book.volumeInfo.title}
                         author={book.volumeInfo.authors}
                         description={book.volumeInfo.description}
                         link={book.volumeInfo.infoLink}
                         thumbnail={book.volumeInfo.imageLinks.thumbnail}
-                        
-                        />
-                        )
-                      })}
-                      <Button onClick={() => this.saveBook(this.SaveBtn)} />
+                      />
+                    );
+                  })}
+                  <Button onClick={() => this.saveBook(this.SaveBtn)} />
                 </BookList>
-           
               )}
             </Col>
-         
-
-
           </Row>
         </Container>
       </div>
@@ -121,5 +102,3 @@ class App extends Component {
 }
 
 export default App;
-
-
